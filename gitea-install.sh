@@ -36,3 +36,6 @@ sudo docker run -d --name gitea-db -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD -
 
 echo "Launch Gitea $GITEA_VERSION container..."
 sudo docker run -d --name gitea  --network gitea-net -p 2200:22 -p 3000:3000 --mount source=$GITEA_DATA_VOLUME,target=/data gitea/gitea:$GITEA_VERSION
+
+echo "Copying configuration to gitea container..."
+sudo docker cp $PWD/app.ini gitea:/data/gitea/conf 
