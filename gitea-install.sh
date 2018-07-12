@@ -15,11 +15,9 @@ GITEA_SSH_PORT=2200
 # Uses the variables in the app.ini configuration file
 sed -e "s/GITEADBPASSWORD/$MYSQL_PASSWORD/g" -e "s/GITEAUIPORT/$GITEA_UI_PORT/g" -e "s/GITEASSHPORT/$GITEA_SSH_PORT/g" tpl.app.ini > app.ini
 
-if [ $GITEA_VERSION != "latest" ]
-then
-  echo "Downloading GITEA docker image..."
-  sudo docker pull gitea/gitea:$GITEA_VERSION
-fi
+echo "Downloading GITEA docker image..."
+sudo docker pull gitea/gitea:$GITEA_VERSION
+
 
 echo "Downloading $DB docker image..."
 sudo docker pull $DB:$DB_VERSION
