@@ -10,7 +10,7 @@ GITEA_DB_VOLUME=gitea-db
 GITEA_DATA_VOLUME=gitea-data
 
 GITEA_UI_PORT=3000
-GITEA_SSH_PORT=22
+GITEA_SSH_PORT=2200
 
 
 if [ $GITEA_VERSION != "latest" ]
@@ -40,4 +40,4 @@ echo "Launch $DB container..."
 sudo docker run -d --name gitea-db -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD -e MYSQL_DATABASE=gitea -e MYSQL_USER=gitea -e MYSQL_PASSWORD=$MYSQL_PASSWORD  --mount source=$GITEA_DB_VOLUME,target=/var/lib/mysql --network gitea-net $DB:$DB_VERSION
 
 echo "Launch Gitea $GITEA_VERSION container..."
-sudo docker run -d --name gitea  --network gitea-net -p 2200:22 -p 3000:3000 --mount source=$GITEA_DATA_VOLUME,target=/data gitea/gitea:$GITEA_VERSION
+sudo docker run -d --name gitea  --network gitea-net -p $GITEA_SSH_PORT:22 -p $GITEA_UI_PORT:3000 --mount source=$GITEA_DATA_VOLUME,target=/data gitea/gitea:$GITEA_VERSION
