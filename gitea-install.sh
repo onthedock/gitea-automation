@@ -1,8 +1,11 @@
 
 DB=mysql 	# mysql, mariadb 
 DB_VERSION=5.7	# tag/version
-MYSQL_ROOT_PASSWORD=VucWftX5ITR7
-MYSQL_PASSWORD=GHh5R9AySsyT
+MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
+# Uses the MYSQL_PASSWORD in the app.ini configuration file
+sed -e "s/GITEADBPASSWORD/$MYSQL_PASSWORD/g" tpl.app.ini > app.ini
 
 GITEA_VERSION=1.3.2
 
