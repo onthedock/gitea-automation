@@ -31,15 +31,13 @@ sudo docker volume create $GITEA_DB_VOLUME
 echo "Creating a user-defined bridge..."
 sudo docker network create gitea-net
 
+echo "Copying Gitea conf to $GITEA_DATA_VOLUME..."
+sudo docker run --rm -d --name gitea --mount source=$GITEA_DATA_VOLUME,target=/data gitea/gitea:$GITEA_VERSION sleep 60
+sudo docker cp $PWD/app.ini gitea:/data/gitea/conf
+sudo docker stop gitea
+
 echo "Launch $DB container..."
 sudo docker run -d --name gitea-db -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD -e MYSQL_DATABASE=gitea -e MYSQL_USER=gitea -e MYSQL_PASSWORD=$MYSQL_PASSWORD  --mount source=$GITEA_DB_VOLUME,target=/var/lib/mysql --network gitea-net $DB:$DB_VERSION
 
 echo "Launch Gitea $GITEA_VERSION container..."
 sudo docker run -d --name gitea  --network gitea-net -p 2200:22 -p 3000:3000 --mount source=$GITEA_DATA_VOLUME,target=/data gitea/gitea:$GITEA_VERSION
-
-echo "Copying configuration to gitea container..."
-sudo docker cp $PWD/app.ini gitea:/data/gitea/conf 
-
-echo "Restart Gitea container to reload copied config..."
-sudo docker stop gitea
-sudo docker start gitea
