@@ -4,9 +4,6 @@ DB_VERSION=5.7	# tag/version
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
-# Uses the MYSQL_PASSWORD in the app.ini configuration file
-sed -e "s/GITEADBPASSWORD/$MYSQL_PASSWORD/g" tpl.app.ini > app.ini
-
 GITEA_VERSION=1.3.2
 
 GITEA_DB_VOLUME=gitea-db
@@ -15,6 +12,8 @@ GITEA_DATA_VOLUME=gitea-data
 GITEA_UI_PORT=3000
 GITEA_SSH_PORT=2200
 
+# Uses the variables in the app.ini configuration file
+sed -e "s/GITEADBPASSWORD/$MYSQL_PASSWORD/g" -e "s/GITEAUIPORT/$GITEA_UI_PORT/g" -e "s/GITEASSHPORT/$GITEA_SSH_PORT/g" tpl.app.ini > app.ini
 
 if [ $GITEA_VERSION != "latest" ]
 then
