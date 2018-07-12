@@ -39,3 +39,7 @@ sudo docker run -d --name gitea  --network gitea-net -p 2200:22 -p 3000:3000 --m
 
 echo "Copying configuration to gitea container..."
 sudo docker cp $PWD/app.ini gitea:/data/gitea/conf 
+
+echo "Restart Gitea container to reload copied config..."
+sudo docker stop gitea
+sudo docker start gitea
