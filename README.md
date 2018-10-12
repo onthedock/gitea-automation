@@ -12,3 +12,9 @@ will run.
 The script also stores the plaintext password for the root and gitea users for the DB, which is not the ideal solution.
 
 So there's a lot to improve! 
+
+## Updates
+
+Now there is a `docker-compose.yml` file! It still has hardcoded passwords, ports... :(
+The script `gitea-install.sh` was improved to generate random passwords each time it was run.
+Please, modify the IP on the `tpl.app.ini` before running the script.
